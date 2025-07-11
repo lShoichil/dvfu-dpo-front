@@ -1,12 +1,27 @@
-import React from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 
+import AuthService from 'api/api.auth';
 import { useAuthStore } from 'stores/AuthAppStore';
 
 const PrivateRoute = () => {
-  const { isAuth, isAuthInProgress } = useAuthStore();
+  const navigate = useNavigate();
+  const { isAuth, isAuthInProgress, setAuth, setAuthInProgress } = useAuthStore();
 
-  if (isAuthInProgress || (!isAuth && !isAuthInProgress)) return <div>Checking auth...</div>;
+  useEffect(() => {
+    const refresh_token = localStorage.getItem('refresh_token') || '';
+    setAuthInProgress(true);
+    AuthService.refresh(refresh_token)
+      .then(({ data }) => {
+        setAuth(true);
+        localStorage.setItem('access_token', data.access_token);
+        localStorage.setItem('refresh_token', data.refresh_token);
+      })
+      .catch(() => navigate('/login'))
+      .finally(() => setAuthInProgress(false));
+  }, [setAuth, setAuthInProgress]);
+
+  if (isAuthInProgress || (!isAuth && !isAuthInProgress)) return <div></div>;
 
   return isAuth ? <Outlet /> : <Navigate to="/login" />;
 };

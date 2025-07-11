@@ -1,33 +1,32 @@
-import React, { useEffect } from 'react';
-import { Route, Routes, useNavigate } from 'react-router';
-import { Button, Empty } from 'antd';
+import React from 'react';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import { Empty } from 'antd';
 import PrivateRoute from 'navigate/PrivateRoute';
-
-import { useAuthStore } from 'stores/AuthAppStore';
+import BaseLayout from 'page/base/BaseLayout';
+import { DirectoryTabs } from 'page/directory/DirectoryTabs';
+import LoginPage from 'page/login/LoginPage';
+import { ProfilePageTabs } from 'page/profile/ProfilePageTabs';
+import StreamAdminPage from 'page/stream/StreamAdminPage';
+import UserTable from 'page/users/UserTable';
 
 import './App.css';
 
 const App = () => {
-  const navigate = useNavigate();
-  const { login, updateByRefresh } = useAuthStore();
-
-  useEffect(() => {
-    updateByRefresh(navigate);
-  }, [updateByRefresh]);
-
-  const onClick = () => {
-    login('curator1', 'curator1').then(() => navigate('/home'));
-  };
-
   return (
     <Routes>
-      <Route path="/login" element={<Empty description={<Button onClick={onClick}>Login</Button>} />} />
-
-      <Route path="/home" element={<PrivateRoute />}>
-        <Route index element={<Empty description={'yra pobeda'} />} />
+      <Route path="login" element={<LoginPage />} />
+      <Route element={<PrivateRoute />}>
+        <Route path="home" element={<BaseLayout />}>
+          <Route path="profile" element={<ProfilePageTabs />} />
+          <Route path="applications" element={<Empty />} />
+          <Route path="directory" element={<DirectoryTabs />} />
+          <Route path="streams-admin" element={<StreamAdminPage />} />
+          <Route path="programs-admin" element={<Empty />} />
+          <Route path="users" element={<UserTable />} />
+        </Route>
       </Route>
 
-      <Route path="*" element={<div>404... not found </div>} />
+      <Route index element={<Navigate to="/home" />} />
     </Routes>
   );
 };
