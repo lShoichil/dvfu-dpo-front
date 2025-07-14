@@ -1,12 +1,14 @@
 import { AxiosResponse } from 'axios';
-import { LoginForm } from 'page/login/LoginPage.js';
+import { LoginForm } from 'page/auth/LoginPage.js';
+import { SignUpPageForm } from 'page/auth/SignUpPage.js';
 
 import { instance } from './api.config.js';
 
 export interface Token {
   access_token: string;
   refresh_token: string;
-  type: string;
+  role: string;
+  token_type: string;
 }
 
 export default class AuthService {
@@ -20,5 +22,13 @@ export default class AuthService {
 
   static logout(refresh_token: string): Promise<AxiosResponse<Token>> {
     return instance.post('auth/logout', { refresh_token });
+  }
+
+  static signup(data: SignUpPageForm): Promise<AxiosResponse<{ id: string }>> {
+    return instance.post('auth/signup', data);
+  }
+
+  static activate(id: string, code: string): Promise<AxiosResponse<{ id: string }>> {
+    return instance.get(`auth/verify?id=${id}&code=${code}`);
   }
 }

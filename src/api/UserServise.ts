@@ -1,14 +1,19 @@
 import { AxiosResponse } from 'axios';
 import { User } from 'data/dto';
+import { PageDto } from 'utils';
 
 import { instance } from './api.config';
+
+interface DataType extends PageDto {
+  users: User[];
+}
 
 export const getUser = (id: number): Promise<AxiosResponse<User>> => {
   return instance.get(`/users/${id}`);
 };
 
-export const getUsers = (): Promise<AxiosResponse<{ users: User[] }>> => {
-  return instance.get('/users');
+export const getUsers = (params: string): Promise<AxiosResponse<DataType>> => {
+  return instance.get('/users' + params);
 };
 
 export const updateUser = (id: number, data: User): Promise<AxiosResponse<User>> => {

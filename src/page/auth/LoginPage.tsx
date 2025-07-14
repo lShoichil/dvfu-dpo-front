@@ -1,11 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { EyeInvisibleOutlined, EyeTwoTone, InfoCircleOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Spin, Tooltip } from 'antd';
+import { Button, Flex, Form, Input, Spin, Tooltip } from 'antd';
 import { getReqRule } from 'utils';
 
 import AuthService from 'api/api.auth';
-import { errorMessage } from 'api/MessageService';
+import { errorMessage, warnMessage } from 'api/MessageService';
 import { useAuthStore } from 'stores/AuthAppStore';
 
 const { Item } = Form;
@@ -20,6 +20,10 @@ const LoginPage = () => {
   const { isAuthInProgress, setAuth, setAuthInProgress } = useAuthStore();
   const [form] = Form.useForm();
 
+  const onSignIn = () => {
+    navigate('/sign-up');
+  };
+
   const handleSubmit = (values: LoginForm) => {
     setAuthInProgress(true);
     AuthService.login(values)
@@ -27,6 +31,7 @@ const LoginPage = () => {
         setAuth(true);
         localStorage.setItem('access_token', data.access_token);
         localStorage.setItem('refresh_token', data.refresh_token);
+        localStorage.setItem('role', data.role);
         navigate('/home');
       })
       .catch(errorMessage)
@@ -54,6 +59,7 @@ const LoginPage = () => {
           form={form}
           onFinish={handleSubmit}
           initialValues={initialValues}
+          onFinishFailed={() => warnMessage('Заполнены не все обязательные поля')}
           style={{
             display: 'flex',
             flexDirection: 'column',
@@ -81,6 +87,12 @@ const LoginPage = () => {
 
           <Button htmlType="submit">{'Войти'}</Button>
         </Form>
+
+        <Flex align="center">
+          <Button onClick={onSignIn} type="link">
+            {'Зарегистрироваться?'}
+          </Button>
+        </Flex>
       </section>
     </Spin>
   );

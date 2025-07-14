@@ -1,7 +1,5 @@
 import axios from 'axios';
 
-import { useAuthStore } from 'stores/AuthAppStore';
-
 import AuthService from './api.auth';
 import { errorMessage, internalAppErrorMessage, serverBadRequestMessage } from './MessageService';
 
@@ -13,6 +11,19 @@ instance.interceptors.request.use((config) => {
   config.headers.Authorization = `Bearer ${localStorage.getItem('access_token')}`;
   return config;
 });
+
+async function refreshAuthToken(refresh_token: string) {
+  try {
+    const { data } = await AuthService.refresh(refresh_token);
+    localStorage.setItem('access_token', data.access_token);
+    localStorage.setItem('refresh_token', data.refresh_token);
+    localStorage.setItem('role', data.role)
+    return data.access_token;
+  } catch (e) {
+    errorMessage(e);
+    throw e;
+  }
+}
 
 instance.interceptors.response.use(
   // в случае валидного accessToken ничего не делаем:
@@ -26,37 +37,21 @@ instance.interceptors.response.use(
     // предотвращаем зацикленный запрос, добавляя свойство _isRetry
     const originalRequest = { ...error.config };
     originalRequest._isRetry = true;
-    if (
-      // проверим, что ошибка именно из-за невалидного accessToken
-      status === 401 &&
-      // проверим, что запрос не повторный
-      error.config &&
-      !error.config._isRetry
-    ) {
+
+    // проверим, что ошибка именно из-за невалидного accessToken и что запрос не повторный
+    if (status === 401 && error.config && !error.config._isRetry) {
       try {
-        // запрос на обновление токенов
         const refresh_token = localStorage.getItem('refresh_token') || '';
-        const { setAuth, setAuthInProgress } = useAuthStore();
+        const newAccessToken = await refreshAuthToken(refresh_token);
 
-        setAuthInProgress(true);
-        AuthService.refresh(refresh_token)
-          .then(({ data }) => {
-            setAuth(true);
-            localStorage.setItem('access_token', data.access_token);
-            localStorage.setItem('refresh_token', data.refresh_token);
-          })
-          .catch(errorMessage)
-          .finally(() => setAuthInProgress(false));
-
-        // переотправляем запрос с обновленным accessToken
+        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
         return instance.request(originalRequest);
       } catch (error) {
         console.log('AUTH ERROR', error);
       }
     }
 
-    // на случай, если возникла другая ошибка (не связанная с авторизацией)
-    // пробросим эту ошибку
+    // на случай другой ошибки
     throw error;
   }
 );

@@ -8,6 +8,7 @@ export default defineConfig({
   resolve: {
     alias: {
       api: path.resolve(__dirname, 'src/api'),
+      data: path.resolve(__dirname, 'src/data'),
       page: path.resolve(__dirname, 'src/page'),
       components: path.resolve(__dirname, 'src/components'),
       navigate: path.resolve(__dirname, 'src/navigate'),

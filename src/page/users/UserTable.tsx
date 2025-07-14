@@ -1,7 +1,16 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import React, { useEffect, useState } from 'react';
 import { CheckCircleOutlined, CloseCircleOutlined, DeleteOutlined, SafetyOutlined } from '@ant-design/icons';
 import { Button, Card, Popconfirm, Select, Space, Table, TableProps, Tag } from 'antd';
 import { User } from 'data/dto';
+import { StatusType } from 'data/enum';
+import {
+  enumFilterByKey,
+  getTableParamsForRequest,
+  getTableParamsFromSessionStorage,
+  handleTableChange,
+  TableParams
+} from 'utils';
 
 import { errorMessage } from 'api/MessageService';
 import { deleteUser, getUsers } from 'api/UserServise';
@@ -16,6 +25,8 @@ const UserTable = () => {
   const [data, setData] = useState<User[]>([]);
   const [updateNeeded, setUpdateNeeded] = useState(true);
   const [loading, setLoading] = useState(false);
+
+  const { tableParams, setTableParams } = getTableParamsFromSessionStorage('userTableParams');
 
   const [open, setOpen] = useState(false);
   const confirm = () => setOpen(false);
@@ -36,6 +47,8 @@ const UserTable = () => {
       title: 'Статусы',
       key: 'statuses',
       dataIndex: 'statuses',
+      filters: enumFilterByKey(StatusType),
+      defaultFilteredValue: tableParams.filters?.productType,
       render: (_, record) => {
         return (
           <Space>
@@ -81,18 +94,29 @@ const UserTable = () => {
     }
   ];
 
-  const getData = () => {
+  const getData = (params: TableParams) => {
+    console.log('params', params);
+
     setUpdateNeeded(false);
     setLoading(true);
-    getUsers()
-      .then(({ data }) => setData(data.users))
+    getUsers(getTableParamsForRequest(params))
+      .then(({ data }) => {
+        setData(data.users);
+        setTableParams({
+          ...params,
+          pagination: {
+            ...params.pagination,
+            pageSize: data.page_size,
+            total: data.total
+          }
+        });
+      })
       .catch((e) => errorMessage(e))
       .finally(() => setLoading(false));
   };
 
   useEffect(() => {
-    if (!updateNeeded) return;
-    getData();
+    updateNeeded && getData(tableParams);
   }, [updateNeeded]);
 
   const handleDelete = (id: string) => {
@@ -105,7 +129,18 @@ const UserTable = () => {
 
   return (
     <Card title="Список пользователей">
-      <Table rowKey="id" columns={columns} dataSource={data} loading={loading} bordered />
+      <Table
+        rowKey="id"
+        columns={columns}
+        dataSource={data}
+        loading={loading}
+        bordered
+        onChange={(pagination, filters, sorter) => {
+          handleTableChange<User>(pagination, filters, sorter, tableParams, setTableParams, setUpdateNeeded);
+        }}
+        scroll={{ x: 1200 }}
+        pagination={tableParams.pagination}
+      />
     </Card>
   );
 };
