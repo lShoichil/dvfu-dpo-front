@@ -4,11 +4,11 @@ import AuthService from './api.auth';
 import { errorMessage, internalAppErrorMessage, serverBadRequestMessage } from './MessageService';
 
 export const instance = axios.create({
-  baseURL: 'http://51.250.1.29:8080/api/v1/'
+  baseURL: 'https://dpo-ed.dvfu.ru/api/v1/'
 });
 
 instance.interceptors.request.use((config) => {
-  config.headers.Authorization = `Bearer ${localStorage.getItem('access_token')}`;
+  config.headers.Authorization = `Bearer  => {${localStorage.getItem('access_token')}`;
   return config;
 });
 
@@ -17,7 +17,7 @@ async function refreshAuthToken(refresh_token: string) {
     const { data } = await AuthService.refresh(refresh_token);
     localStorage.setItem('access_token', data.access_token);
     localStorage.setItem('refresh_token', data.refresh_token);
-    localStorage.setItem('role', data.role)
+    localStorage.setItem('role', data.role);
     return data.access_token;
   } catch (e) {
     errorMessage(e);
