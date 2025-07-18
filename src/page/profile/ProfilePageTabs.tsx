@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Empty, Tabs, TabsProps } from 'antd';
-import MyCourcePage from 'page/programs/MyProgramPage';
+import MyProgramPage from 'page/programs/MyProgramPage';
 
 import ProfileDocumentPage from './ProfileDocumentPage';
 import ProfilePage from './ProfilePage';
@@ -24,7 +24,7 @@ export const ProfilePageTabs = () => {
     {
       key: 'my-programs',
       label: 'Моё обучение',
-      children: <MyCourcePage />
+      children: <MyProgramPage />
     },
     {
       key: 'documents',

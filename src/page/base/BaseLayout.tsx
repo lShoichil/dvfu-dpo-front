@@ -34,12 +34,12 @@ const menuItems: MenuItemType[] = [
     label: 'Заявки'
   },
   {
-    key: 'streams-admin',
+    key: 'streams',
     icon: <TableOutlined />,
     label: 'Потоки (Админ)'
   },
   {
-    key: 'programs-admin',
+    key: 'programs',
     icon: <FolderOpenOutlined />,
     label: 'Программы'
   },
@@ -79,7 +79,6 @@ const BaseLayout = () => {
           onClick={({ key }) => navigate(key)}
           activeKey={activeKey}
           defaultSelectedKeys={[activeKey]}
-          disabledOverflow
         />
 
         <Segmented

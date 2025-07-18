@@ -1,5 +1,11 @@
 export enum RoleType {
-  Admin = 'administrator',
-  Curator = 'curator',
-  Applicant = 'applicant'
+  ADMINISTRATOR = 'administrator',
+  CURATOR = 'curator',
+  APPLICANT = 'applicant'
 }
+
+export const RoleTypeRu = {
+  [RoleType.ADMINISTRATOR]: 'Администартор',
+  [RoleType.CURATOR]: 'Куратор',
+  [RoleType.APPLICANT]: 'Абитуриент'
+};

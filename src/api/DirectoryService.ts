@@ -1,10 +1,9 @@
 import { AxiosResponse } from 'axios';
-import { EducationType } from 'page/directory/EducationTypePage';
-import { School } from 'page/directory/SchoolPage';
+import { EducationType, PageDto, School } from 'data/dto';
 
 import { instance } from './api.config';
 
-export const getSchools = (): Promise<AxiosResponse<{ schools: School[] }>> => {
+export const getSchools = (): Promise<AxiosResponse<PageDto<School>>> => {
   return instance.get('/schools');
 };
 
@@ -22,7 +21,7 @@ export const deleteSchool = (id: number): Promise<AxiosResponse<School>> => {
 
 // --------
 
-export const getEducationTypes = (): Promise<AxiosResponse<{ education_types: EducationType[] }>> => {
+export const getEducationTypes = (): Promise<AxiosResponse<PageDto<EducationType>>> => {
   return instance.get('/education-types');
 };
 

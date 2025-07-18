@@ -1,5 +1,11 @@
 export enum StudyModeType {
   FULL_TIME = 'full-time',
-  ONLINE = 'online',
+  DISTANCE = 'distance',
   BLENDED = 'blended'
 }
+
+export const StudyModeTypeRu = {
+  [StudyModeType.FULL_TIME]: 'Полная',
+  [StudyModeType.DISTANCE]: 'Онлайн',
+  [StudyModeType.BLENDED]: 'Частичная'
+};

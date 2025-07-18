@@ -1,16 +1,12 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { ShopOutlined } from '@ant-design/icons';
 import { Button, Flex, Input, List, Space, Typography } from 'antd';
+import { School } from 'data/dto';
 
 import { addSchool, deleteSchool, getSchools, updateSchool } from 'api/DirectoryService';
 import { errorMessage, warnMessage } from 'api/MessageService';
 
 const { Text } = Typography;
-
-export interface School {
-  id: number;
-  name: string;
-}
 
 const SchoolPage = () => {
   const [data, setData] = useState<School[]>([]);
@@ -23,7 +19,7 @@ const SchoolPage = () => {
     setUpdateNeeded(false);
     setLoading(true);
     getSchools()
-      .then(({ data }) => setData(data.schools))
+      .then(({ data }) => setData(data.data))
       .catch((e) => errorMessage(e))
       .finally(() => setLoading(false));
   };

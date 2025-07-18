@@ -1,16 +1,12 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { ClusterOutlined } from '@ant-design/icons';
 import { Button, Flex, Input, List, Space, Typography } from 'antd';
+import { EducationType } from 'data/dto';
 
 import { addEducationType, deleteEducationType, getEducationTypes, updateEducationType } from 'api/DirectoryService';
 import { errorMessage, warnMessage } from 'api/MessageService';
 
 const { Text } = Typography;
-
-export interface EducationType {
-  id: number;
-  name: string;
-}
 
 const EducationTypePage = () => {
   const [data, setData] = useState<EducationType[]>([]);
@@ -23,7 +19,7 @@ const EducationTypePage = () => {
     setUpdateNeeded(false);
     setLoading(true);
     getEducationTypes()
-      .then(({ data }) => setData(data.education_types))
+      .then(({ data }) => setData(data.data))
       .catch((e) => errorMessage(e))
       .finally(() => setLoading(false));
   };

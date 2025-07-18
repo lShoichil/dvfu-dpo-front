@@ -1,6 +1,8 @@
+import { RoleType } from 'data/enum';
+
 export interface User {
   id: string;
-  role: string;
+  role: RoleType;
   email: string;
 
   name: string;

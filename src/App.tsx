@@ -8,7 +8,7 @@ import SignUpPage from 'page/auth/SignUpPage';
 import BaseLayout from 'page/base/BaseLayout';
 import { DirectoryTabs } from 'page/directory/DirectoryTabs';
 import { ProfilePageTabs } from 'page/profile/ProfilePageTabs';
-import StreamAdminPage from 'page/stream/StreamAdminPage';
+import ProgramsPage from 'page/programs/ProgramsPage';
 import UserTable from 'page/users/UserTable';
 
 import './App.css';
@@ -22,10 +22,10 @@ const App = () => {
       <Route element={<PrivateRoute />}>
         <Route path="home" element={<BaseLayout />}>
           <Route path="profile" element={<ProfilePageTabs />} />
-          <Route path="applications" element={<Empty />} />
+          <Route path="applications" element={<Empty description="В процессе разработки" />} />
           <Route path="directory" element={<DirectoryTabs />} />
-          <Route path="streams-admin" element={<StreamAdminPage />} />
-          <Route path="programs-admin" element={<Empty />} />
+          <Route path="streams" element={<Empty />} />
+          <Route path="programs" element={<ProgramsPage />} />
           <Route path="users" element={<UserTable />} />
         </Route>
       </Route>

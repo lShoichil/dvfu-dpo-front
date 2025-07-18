@@ -1,12 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
-import { TablePaginationConfig } from 'antd';
+import { PaginationProps, TablePaginationConfig } from 'antd';
 import { ColumnFilterItem, FilterValue, SorterResult } from 'antd/es/table/interface';
-
-export interface PageDto {
-  page: number;
-  page_size: number;
-  total: number;
-}
 
 export interface TableParams {
   filters?: Record<string, FilterValue | null>;
@@ -32,6 +26,8 @@ export const DEFAULT_TABLE_PARAMS: TableParams = {
 //     pageSizeOptions: [10, 20, 30, 50, 100]
 //   }
 // };
+
+export const showTotal: PaginationProps['showTotal'] = (total) => `Total ${total} items`;
 
 export const getTableParamsFromSessionStorage = (key: string) => {
   const setTableParams = (params: TableParams) => window.sessionStorage.setItem(key, JSON.stringify(params));
@@ -63,7 +59,7 @@ export const filtersToString = (filters?: Record<string, string[] | FilterValue 
   if (!filters) return '';
 
   return Object.keys(filters)?.reduce((query, key) => {
-    if (!filters[key]) return query;
+    if (!filters[key] || !(filters[key]?.length > 0)) return query;
     return query + `${key}=${filters[key].join(',')}&`;
   }, '');
 };
@@ -85,9 +81,16 @@ export const getTableParamsForRequest = (params: TableParams): string => {
   return paramsString.endsWith('&') ? paramsString.slice(0, paramsString.length - 1) : paramsString;
 };
 
-export const enumFilterByKey = (type: any): ColumnFilterItem[] => {
-  return Object.keys(type).map((key) => ({
-    text: type[key],
-    value: key
-  }));
+export const enumFilterByKey = (type: any, hasRuValue = false): ColumnFilterItem[] => {
+  return Object.keys(type).map((key) => {
+    const result = hasRuValue ? { text: key, value: type[key] } : { text: type[key], value: key };
+    return result;
+  });
+};
+
+export const enumOptionsByKey = (type: any, hasRuValue = false) => {
+  return Object.keys(type).map((key) => {
+    const result = hasRuValue ? { label: key, value: type[key] } : { label: type[key], value: key };
+    return result;
+  });
 };
