@@ -14,8 +14,8 @@ import { Layout, Menu, Segmented } from 'antd';
 import { Content, Header } from 'antd/es/layout/layout';
 import { MenuItemType } from 'antd/es/menu/interface';
 
-import ExitDropdown from 'components/base-layout/ExitDropdown';
-import NotificationDrawer from 'components/base-layout/NotificationDrawer';
+import ExitDropdown from 'page/base/components/ExitDropdown';
+import NotificationDrawer from 'page/base/components/NotificationDrawer';
 
 const menuItems: MenuItemType[] = [
   {

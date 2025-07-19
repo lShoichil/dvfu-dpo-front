@@ -27,7 +27,7 @@ export const DEFAULT_TABLE_PARAMS: TableParams = {
 //   }
 // };
 
-export const showTotal: PaginationProps['showTotal'] = (total) => `Total ${total} items`;
+export const showTotal: PaginationProps['showTotal'] = (total) => `Всего ${total}`;
 
 export const getTableParamsFromSessionStorage = (key: string) => {
   const setTableParams = (params: TableParams) => window.sessionStorage.setItem(key, JSON.stringify(params));
@@ -60,7 +60,9 @@ export const filtersToString = (filters?: Record<string, string[] | FilterValue 
 
   return Object.keys(filters)?.reduce((query, key) => {
     if (!filters[key] || !(filters[key]?.length > 0)) return query;
-    return query + `${key}=${filters[key].join(',')}&`;
+
+    if (Array.isArray(filters[key])) return query + `${key}=${filters[key].join(',')}&`;
+    return query + `${key}=${filters[key]}&`;
   }, '');
 };
 
