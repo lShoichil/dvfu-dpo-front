@@ -8,5 +8,5 @@ export const getAllPrograms = (params: string): Promise<AxiosResponse<PageDto<Pr
 };
 
 export const getProgramImage = (imageUrl: string): Promise<AxiosResponse<any>> => {
-  return instance.get('/storage/' + imageUrl);
+  return instance.options('/storage/' + imageUrl);
 };

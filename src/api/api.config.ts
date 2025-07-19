@@ -7,6 +7,7 @@ export const baseURL = 'https://dpo-ed.dvfu.ru/api/v1/';
 export const instance = axios.create({ baseURL });
 
 instance.interceptors.request.use((config) => {
+  if (config.url?.includes('storage')) config.baseURL = config.baseURL?.replace('/api/v1/', '');
   config.headers.Authorization = `Bearer ${localStorage.getItem('access_token')}`;
   return config;
 });

@@ -49,7 +49,7 @@ const ProgramsPage = () => {
   return (
     <Flex vertical gap="middle">
       <FilterCard
-        loading={false}
+        loading={loading}
         tableParams={tableParams}
         setTableParams={setTableParams}
         setUpdateNeeded={setUpdateNeeded}
