@@ -7,26 +7,42 @@ interface IProps {
   name: string;
   placeholder: string;
   options: DefaultOptionType[];
+  isMultiple?: boolean;
+  disabled?: boolean;
   tableParams: TableParams;
   setTableParams: (v: TableParams) => void;
+  setUpdateNeeded: (v: boolean) => void;
 }
 
-const FilterSelect: FC<IProps> = ({ name, placeholder, options, tableParams, setTableParams }) => {
+const FilterSelect: FC<IProps> = ({
+  name,
+  placeholder,
+  options,
+  isMultiple,
+  disabled,
+  tableParams,
+  setTableParams,
+  setUpdateNeeded
+}) => {
+  const mode = isMultiple ? 'multiple' : undefined;
+
   const filterOption = (inputValue: string, option: DefaultOptionType | undefined) =>
     (option?.title ?? option?.label ?? '').toString().toLowerCase().includes(inputValue.toLowerCase());
 
   const handleFilterChange = (value: any) => {
+    console.log('value', value);
     setTableParams({
       ...tableParams,
       filters: { ...tableParams.filters, [name]: value },
       pagination: { ...tableParams.pagination, current: 1 }
     });
+    setUpdateNeeded(true);
   };
 
   return (
     <Select
       placeholder={placeholder}
-      mode={'multiple'}
+      mode={mode}
       style={{ width: 180 }}
       allowClear
       popupMatchSelectWidth={false}
@@ -35,6 +51,7 @@ const FilterSelect: FC<IProps> = ({ name, placeholder, options, tableParams, set
       defaultValue={tableParams.filters?.[name]}
       onChange={handleFilterChange}
       options={options}
+      disabled={disabled}
     />
   );
 };

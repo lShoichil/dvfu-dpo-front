@@ -7,6 +7,14 @@ export const getAllPrograms = (params: string): Promise<AxiosResponse<PageDto<Pr
   return instance.get('/programs' + params);
 };
 
+export const getProgram = (id: string): Promise<AxiosResponse<Program>> => {
+  return instance.get(`/programs/${id}`);
+};
+
+export const deleteProgram = (id: string): Promise<AxiosResponse<Program>> => {
+  return instance.delete(`/programs/${id}`);
+};
+
 export const getProgramImage = (imageUrl: string): Promise<AxiosResponse<any>> => {
   return instance.options('/storage/' + imageUrl);
 };

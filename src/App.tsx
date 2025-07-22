@@ -8,7 +8,8 @@ import SignUpPage from 'page/auth/SignUpPage';
 import BaseLayout from 'page/base/BaseLayout';
 import { DirectoryTabs } from 'page/directory/DirectoryTabs';
 import { ProfilePageTabs } from 'page/profile/ProfilePageTabs';
-import ProgramsPage from 'page/programs/ProgramsPage';
+import ProgramPage from 'page/programs/ProgramPage';
+import ThreadsPage from 'page/threads/ThreadsPage';
 import UserTable from 'page/users/UserTable';
 
 import './App.css';
@@ -24,8 +25,8 @@ const App = () => {
           <Route path="profile" element={<ProfilePageTabs />} />
           <Route path="applications" element={<Empty description="В процессе разработки" />} />
           <Route path="directory" element={<DirectoryTabs />} />
-          <Route path="streams" element={<Empty />} />
-          <Route path="programs" element={<ProgramsPage />} />
+          <Route path="threads" element={<ThreadsPage />} />
+          <Route path="programs" element={<ProgramPage />} />
           <Route path="users" element={<UserTable />} />
         </Route>
       </Route>

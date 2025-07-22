@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 import React, { useEffect, useState } from 'react';
 import { CheckCircleOutlined, CloseCircleOutlined, DeleteOutlined, SafetyOutlined } from '@ant-design/icons';
-import { Card, Popconfirm, Select, Space, Table, TableProps, Tag, Tooltip } from 'antd';
+import { Card, Popconfirm, Select, Table, TableProps, Tag, Tooltip } from 'antd';
 import { User } from 'data/dto';
-import { RoleType, RoleTypeRu, StatusType } from 'data/enum';
+import { RoleType, RoleTypeRu } from 'data/enum';
 import {
-  enumFilterByKey,
   enumOptionsByKey,
   getTableParamsForRequest,
   getTableParamsFromSessionStorage,
@@ -16,7 +15,7 @@ import {
 import { errorMessage } from 'api/MessageService';
 import { deleteUser, getUsers, updateUser } from 'api/UserService';
 
-const options = enumOptionsByKey(RoleType);
+const options = enumOptionsByKey(RoleTypeRu);
 
 const UserTable = () => {
   const [data, setData] = useState<User[]>([]);
@@ -43,32 +42,40 @@ const UserTable = () => {
       )
     },
     {
-      title: 'Статусы',
-      key: 'statuses',
-      dataIndex: 'statuses',
-      filters: enumFilterByKey(StatusType),
-      defaultFilteredValue: tableParams.filters?.productType,
-      render: (_, record) => {
-        return (
-          <Space>
-            <Tag
-              color={record.verify ? 'green' : 'red'}
-              icon={record.verify ? <CheckCircleOutlined /> : <CloseCircleOutlined />}
-            >
-              {record.verify ? 'Подтверждён' : 'Не подтверждён'}
-            </Tag>
-            <Tag
-              color={record.deleted ? 'volcano' : 'geekblue'}
-              icon={record.deleted ? <DeleteOutlined /> : <SafetyOutlined />}
-            >
-              {record.deleted ? 'Удалён' : 'Активный'}
-            </Tag>
-          </Space>
-        );
-      }
+      title: 'Статус',
+      key: 'verify',
+      dataIndex: 'verify',
+      align: 'center',
+      filters: [
+        { text: 'Подтверждён', value: true },
+        { text: 'Не подтверждён', value: false }
+      ],
+      defaultFilteredValue: tableParams.filters?.verify,
+      render: (value) => (
+        <Tag color={value ? 'green' : 'red'} icon={value ? <CheckCircleOutlined /> : <CloseCircleOutlined />}>
+          {value ? 'Подтверждён' : 'Не подтверждён'}
+        </Tag>
+      )
+    },
+    {
+      title: 'Статус',
+      key: 'deleted',
+      dataIndex: 'deleted',
+      align: 'center',
+      filters: [
+        { text: 'Удалён', value: true },
+        { text: 'Активный', value: false }
+      ],
+      defaultFilteredValue: tableParams.filters?.deleted,
+      render: (value) => (
+        <Tag color={value ? 'volcano' : 'geekblue'} icon={value ? <DeleteOutlined /> : <SafetyOutlined />}>
+          {value ? 'Удалён' : 'Активный'}
+        </Tag>
+      )
     },
     {
       key: 'action',
+      fixed: 'right',
       render: (_, record) => (
         <Popconfirm
           title={'Вы уверены что хотите удалить этого пользователя?'}

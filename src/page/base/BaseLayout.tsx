@@ -13,42 +13,9 @@ import {
 import { Layout, Menu, Segmented } from 'antd';
 import { Content, Header } from 'antd/es/layout/layout';
 import { MenuItemType } from 'antd/es/menu/interface';
-
+import { useHasRole } from 'hooks/useHasRole';
 import ExitDropdown from 'page/base/components/ExitDropdown';
 import NotificationDrawer from 'page/base/components/NotificationDrawer';
-
-const menuItems: MenuItemType[] = [
-  {
-    key: 'profile',
-    icon: <UserOutlined />,
-    label: 'Мой профиль'
-  },
-  {
-    key: 'directory',
-    icon: <ContainerOutlined />,
-    label: 'Справочники'
-  },
-  {
-    key: 'applications',
-    icon: <FileProtectOutlined />,
-    label: 'Заявки'
-  },
-  {
-    key: 'streams',
-    icon: <TableOutlined />,
-    label: 'Потоки (Админ)'
-  },
-  {
-    key: 'programs',
-    icon: <FolderOpenOutlined />,
-    label: 'Программы'
-  },
-  {
-    key: 'users',
-    icon: <TeamOutlined />,
-    label: 'Пользователи'
-  }
-];
 
 const BaseLayout = () => {
   const params = useLocation();
@@ -62,6 +29,112 @@ const BaseLayout = () => {
     navigate(activeKey);
   }, []);
 
+  const { hasRoleAdmin, hasRoleCurator } = useHasRole();
+  const getMenuItems = (): MenuItemType[] => {
+    const adminMenu: MenuItemType[] = [
+      {
+        key: 'profile',
+        icon: <UserOutlined />,
+        label: 'Мой профиль'
+      },
+      {
+        key: 'directory',
+        icon: <ContainerOutlined />,
+        label: 'Справочники'
+      },
+      {
+        key: 'applications',
+        icon: <FileProtectOutlined />,
+        label: 'Заявки'
+      },
+      {
+        key: 'threads',
+        icon: <TableOutlined />,
+        label: 'Потоки'
+      },
+      {
+        key: 'programs',
+        icon: <FolderOpenOutlined />,
+        label: 'Программы'
+      },
+      {
+        key: 'users',
+        icon: <TeamOutlined />,
+        label: 'Пользователи'
+      }
+    ];
+
+    const curatorMenu = [
+      {
+        key: 'profile',
+        icon: <UserOutlined />,
+        label: 'Мой профиль'
+      },
+      {
+        key: 'directory',
+        icon: <ContainerOutlined />,
+        label: 'Справочники'
+      },
+      {
+        key: 'applications',
+        icon: <FileProtectOutlined />,
+        label: 'Заявки'
+      },
+      {
+        key: 'threads',
+        icon: <TableOutlined />,
+        label: 'Потоки'
+      },
+      {
+        key: 'programs',
+        icon: <FolderOpenOutlined />,
+        label: 'Программы'
+      },
+      {
+        key: 'users',
+        icon: <TeamOutlined />,
+        label: 'Пользователи'
+      }
+    ];
+
+    const applicantMenu: MenuItemType[] = [
+      {
+        key: 'profile',
+        icon: <UserOutlined />,
+        label: 'Мой профиль'
+      },
+      {
+        key: 'directory',
+        icon: <ContainerOutlined />,
+        label: 'Справочники'
+      },
+      {
+        key: 'applications',
+        icon: <FileProtectOutlined />,
+        label: 'Заявки'
+      },
+      {
+        key: 'threads',
+        icon: <TableOutlined />,
+        label: 'Потоки'
+      },
+      {
+        key: 'programs',
+        icon: <FolderOpenOutlined />,
+        label: 'Программы'
+      },
+      {
+        key: 'users',
+        icon: <TeamOutlined />,
+        label: 'Пользователи'
+      }
+    ];
+
+    if (hasRoleAdmin) return adminMenu;
+    if (hasRoleCurator) return curatorMenu;
+    return applicantMenu;
+  };
+
   return (
     <Layout style={{ maxWidth: 1200, margin: '0 auto' }}>
       <Header
@@ -73,7 +146,7 @@ const BaseLayout = () => {
         }}
       >
         <Menu
-          items={menuItems}
+          items={getMenuItems()}
           theme="light"
           mode="horizontal"
           onClick={({ key }) => navigate(key)}
