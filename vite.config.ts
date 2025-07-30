@@ -5,6 +5,10 @@ import { defineConfig } from 'vite';
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  preview: {
+    host: true,
+    allowedHosts: ['dpo-ed.dvfu.ru']
+  },
   resolve: {
     alias: {
       api: path.resolve(__dirname, 'src/api'),
@@ -16,12 +20,5 @@ export default defineConfig({
       stores: path.resolve(__dirname, 'src/stores'),
       utils: path.resolve(__dirname, 'src/utils')
     }
-  },
-  server: {
-    port: 8080,
-    host: true
-  },
-  preview: {
-    port: 8080
   }
 });
