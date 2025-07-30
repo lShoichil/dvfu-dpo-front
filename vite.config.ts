@@ -7,6 +7,7 @@ export default defineConfig({
   plugins: [react()],
   preview: {
     host: true,
+    port: 8080,
     allowedHosts: ['dpo-ed.dvfu.ru']
   },
   resolve: {
