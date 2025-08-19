@@ -15,6 +15,6 @@ export const deleteProgram = (id: string): Promise<AxiosResponse<Program>> => {
   return instance.delete(`/programs/${id}`);
 };
 
-export const getProgramImage = (imageUrl: string): Promise<AxiosResponse<any>> => {
-  return instance.options('/storage/' + imageUrl);
+export const getProgramImage = (imageUrl: string): Promise<AxiosResponse> => {
+  return instance.get('/storage/' + imageUrl, { responseType: 'blob' });
 };

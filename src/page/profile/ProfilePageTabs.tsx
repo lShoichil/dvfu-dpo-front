@@ -8,7 +8,7 @@ import ProfilePage from './ProfilePage';
 
 export const ProfilePageTabs = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const preselectedTabKey = searchParams.get('tabKey') ?? 'info';
+  const preselectedTabKey = searchParams.get('tabKey') ?? 'documents';
   const [currentTabKey, setCurrentTabKey] = useState(preselectedTabKey);
 
   useEffect(() => {

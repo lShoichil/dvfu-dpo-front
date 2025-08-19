@@ -10,27 +10,42 @@ interface IProps {
 }
 
 export const SecureImage: FC<IProps> = ({ imagePath, alt, defaultImage }) => {
-  const [imageUrl, setImageUrl] = useState(defaultImage);
+  const [imageUrl, setImageUrl] = useState<string>(defaultImage);
 
   useEffect(() => {
     if (!imagePath) return;
+    let blobUrl: string | null = null;
 
     getProgramImage(imagePath)
       .then(({ data }) => {
-        const blobUrl = URL.createObjectURL(data);
-        setImageUrl(blobUrl);
+        if (data instanceof Blob) {
+          blobUrl = URL.createObjectURL(data);
+          setImageUrl(blobUrl);
+        } else {
+          console.error('Ожидался Blob, получено:', data);
+          setImageUrl(defaultImage);
+        }
       })
-      .catch(() => {
+      .catch((error) => {
+        console.error('Ошибка загрузки изображения:', error);
         setImageUrl(defaultImage);
       });
 
-    // Очистка Blob URL при размонтировании
     return () => {
-      if (imageUrl.startsWith('blob:')) {
-        URL.revokeObjectURL(imageUrl);
+      if (blobUrl) {
+        URL.revokeObjectURL(blobUrl);
       }
     };
-  }, [imagePath]);
+  }, [imagePath, defaultImage]);
 
-  return <Image src={imageUrl} alt={alt} preview={false} height={140} style={{ objectFit: 'cover' }} />;
+  return (
+    <Image
+      src={imageUrl}
+      alt={alt}
+      preview={false}
+      height={140}
+      style={{ objectFit: 'cover' }}
+      fallback={defaultImage} // Запасное изображение при ошибке
+    />
+  );
 };
