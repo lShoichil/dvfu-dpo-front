@@ -9,8 +9,6 @@ interface IProps {
 }
 
 export const DocumentStatusTag: FC<IProps> = ({ status }) => {
-  console.log('status', status);
-
   let text;
   let color;
   let icon;

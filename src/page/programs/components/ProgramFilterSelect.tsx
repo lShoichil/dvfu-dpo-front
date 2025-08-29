@@ -30,7 +30,6 @@ const FilterSelect: FC<IProps> = ({
     (option?.title ?? option?.label ?? '').toString().toLowerCase().includes(inputValue.toLowerCase());
 
   const handleFilterChange = (value: any) => {
-    console.log('value', value);
     setTableParams({
       ...tableParams,
       filters: { ...tableParams.filters, [name]: value },

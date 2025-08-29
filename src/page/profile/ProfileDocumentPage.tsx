@@ -107,9 +107,6 @@ const ProfileDocumentPage = () => {
   };
 
   const getCurrentStep = () => {
-    console.log(2, data);
-    console.log(1, hasAnyDocuments);
-    // console.log(1, hasAnyDocuments && data?.verify);
     if (hasAnyDocuments && !data?.verify) setCurrentStep(2);
     if (hasAnyDocuments && data?.verify) setCurrentStep(3);
   };
