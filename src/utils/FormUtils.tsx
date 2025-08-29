@@ -14,10 +14,7 @@ export const formatIntAmount = (num?: number | undefined | string): string | und
   return Math.round(parseFloat(String(num))).toLocaleString('ru');
 };
 
-export const mapDate = (date?: Date | string): string | undefined => {
-  if (!date) {
-    return '\n';
-  }
-  const result = dayjs(date);
-  return result?.format('DD.MM.YYYY');
+export const mapDate = (date: Date | string | undefined): dayjs.Dayjs | undefined => {
+  if (date == undefined) return undefined;
+  return dayjs(date, 'DD.MM.YYYY');
 };

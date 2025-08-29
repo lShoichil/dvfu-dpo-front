@@ -10,7 +10,7 @@ export const warnMessage = (text: string) => {
 
 export const errorMessage = (error?: any) => {
   console.error('error', error);
-  message.error(`Произошла ошибка: ${error?.response?.message || 'Неизвестная ошибка'} (${error?.response?.status})`);
+  message.error(`Произошла ошибка: ${error.response?.data?.message || 'Неизвестная ошибка'} (${error?.code})`);
 };
 
 export const serverBadRequestMessage = (error: Error, detail?: unknown) => {

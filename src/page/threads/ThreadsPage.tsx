@@ -3,18 +3,18 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Button, Card, Flex, List, Pagination, Space, Tag, Tooltip, Typography } from 'antd';
 import { Thread } from 'data/dto';
 import { StudyModeTypeRu } from 'data/enum';
+import dayjs from 'dayjs';
 import { useHasRole } from 'hooks/useHasRole';
 import {
   formatIntAmount,
   getTableParamsForRequest,
   getTableParamsFromSessionStorage,
-  mapDate,
   showTotal,
   TableParams
 } from 'utils';
 
 import { errorMessage } from 'api/MessageService';
-import { getAllTreads } from 'api/TreadsService';
+import { getAllTreads, getOpenTreads } from 'api/TreadsService';
 
 import FilterCard from '../programs/components/ProgramFilterCard';
 import { SecureImage } from '../programs/components/ProgramSecureImage';
@@ -22,14 +22,12 @@ import ThreadModal from './ThreadModal';
 
 const { Title, Text, Paragraph } = Typography;
 
-const DEFAULT_IMAGE = 'https://gw.alipayobjects.com/zos/rmsportal/iXjVmWVHbCJAyqvDxdtx.png';
-
 const ThreadsPage = () => {
   const [data, setData] = useState<Thread[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [updateNeeded, setUpdateNeeded] = useState<boolean>(true);
 
-  const { hasRoleAdmin, hasRoleCurator } = useHasRole();
+  const { hasRoleAdmin, hasRoleCurator, hasRoleApplicant } = useHasRole();
   const { tableParams, setTableParams } = getTableParamsFromSessionStorage('treadsTableParams');
 
   const getData = (params: TableParams) => {
@@ -37,7 +35,9 @@ const ThreadsPage = () => {
 
     setUpdateNeeded(false);
     setLoading(true);
-    getAllTreads(finParams)
+
+    const request = hasRoleApplicant ? getOpenTreads : getAllTreads;
+    request(finParams)
       .then(({ data }) => {
         setData(data.data);
         setTableParams({
@@ -113,13 +113,13 @@ const ThreadsPage = () => {
                     {<Text strong>{`${formatIntAmount(thread.price.rubles)} ₽`}</Text>}
                   </Tooltip>,
                   <Tooltip key={`${thread.id}-start_date`} title="Дата старта программы">
-                    {<Text strong>{`${mapDate(thread?.start_date)}`}</Text>}
+                    {<Text strong>{`${dayjs(thread?.start_date).format('DD.MM.YYYY')}`}</Text>}
                   </Tooltip>,
                   <Tooltip key={`${thread.id}-hours`} title="Длительность в академических часах">
                     {<Text strong>{`${program.academic_hours} ч.`}</Text>}
                   </Tooltip>
                 ]}
-                cover={<SecureImage imagePath={program.image} alt={program.name} defaultImage={DEFAULT_IMAGE} />}
+                cover={<SecureImage imagePath={program.image} alt={program.name} />}
               >
                 <Flex vertical gap={'small'}>
                   <Title level={5} ellipsis={{ rows: 2 }} style={{ margin: 0 }}>

@@ -15,6 +15,11 @@ export const deleteProgram = (id: string): Promise<AxiosResponse<Program>> => {
   return instance.delete(`/programs/${id}`);
 };
 
-export const getProgramImage = (imageUrl: string): Promise<AxiosResponse> => {
+// todo: added storage api service
+export const getStorageData = (imageUrl: string): Promise<AxiosResponse> => {
   return instance.get('/storage/' + imageUrl, { responseType: 'blob' });
+};
+
+export const uploadFile = (data: FormData): Promise<AxiosResponse<{ Name: string }>> => {
+  return instance.post('/files/upload', data);
 };

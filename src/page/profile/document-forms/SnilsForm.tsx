@@ -5,6 +5,8 @@ import { getReqRule } from 'utils';
 import { errorMessage } from 'api/MessageService';
 import { Passport, SnilsWithStatus, updateMySnils } from 'api/ProfileService';
 
+import { AlertAboutDocument } from './components/AlertAboutDocument';
+
 const { Item } = Form;
 
 interface IProps {
@@ -26,11 +28,17 @@ const SnilsForm: FC<IProps> = ({ id, data, setUpdateNeeded }) => {
 
     updateMySnils(id, dto)
       .then(() => setUpdateNeeded(true))
-      .catch((e) => errorMessage(e));
+      .catch(errorMessage);
   };
 
   return (
     <Form form={form} onFinish={handleSubmit} initialValues={initialValues} layout="vertical">
+      {data?.message && (
+        <Item>
+          <AlertAboutDocument status={data?.status} message={data?.message} />
+        </Item>
+      )}
+
       <Row gutter={16}>
         <Col span={6}>
           <Item name="number" label="Номер СНИЛС" rules={[getReqRule()]}>

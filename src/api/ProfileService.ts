@@ -65,8 +65,10 @@ export interface EducationDocument {
 }
 
 export interface Diploma {
-  // Уточните структуру DiplomaDTO при необходимости
-  [key: string]: any;
+  issue_date: Date;
+  number: number;
+  series: number;
+  surname: string;
 }
 
 // ===== OPD =====
@@ -81,6 +83,10 @@ export interface OPD {
   document: string;
 }
 
+export interface OPDDocument {
+  name: string;
+}
+
 // ===== Passport =====
 export interface PassportWithStatus {
   message?: string;
@@ -89,7 +95,7 @@ export interface PassportWithStatus {
 }
 
 export interface Passport {
-  date_of_birth: string;
+  date_of_birth: Date;
   department_code: string;
   gender: Gender;
   issued_by: string;
@@ -132,4 +138,25 @@ export const updateMyPassport = (id: string, data: Passport): Promise<AxiosRespo
 
 export const updateMySnils = (id: string, data: Snils): Promise<AxiosResponse> => {
   return instance.post(`/users/${id}/resume/snils`, data);
+};
+
+export const updateMyEducation = (id: string, data: EducationDocument): Promise<AxiosResponse> => {
+  return instance.post(`/users/${id}/resume/education`, data);
+};
+
+export const updateMyAdditionalInfo = (id: string, data: AdditionalInformation): Promise<AxiosResponse> => {
+  return instance.post(`/users/${id}/resume/additional-information`, data);
+};
+
+export const updateMyOPD = (id: string, data: OPDDocument): Promise<AxiosResponse> => {
+  return instance.post(`/users/${id}/resume/opd`, data);
+};
+
+export const updateMySurnameChange = (id: string, data: OPDDocument): Promise<AxiosResponse> => {
+  return instance.post(`/users/${id}/resume/surname-change`, data);
+};
+
+// todo: added services for opd
+export const getOPDId = (): Promise<AxiosResponse<{ Name: string }>> => {
+  return instance.get('/opd');
 };

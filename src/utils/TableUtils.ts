@@ -96,3 +96,15 @@ export const enumOptionsByKey = (type: any, hasRuValue = false) => {
     return result;
   });
 };
+
+export const saveToFile = async (object?: string | Uint8Array, filename?: string, typeBlob?: string) => {
+  if (!object || !filename || !typeBlob) return;
+
+  // @ts-ignore
+  const blob = new Blob([object], { type: typeBlob });
+  const a = document.createElement('a');
+  a.download = filename;
+  a.href = URL.createObjectURL(blob);
+  a.addEventListener('click', () => setTimeout(() => URL.revokeObjectURL(a.href), 30 * 1000));
+  a.click();
+};

@@ -5,12 +5,11 @@ import { Tag } from 'antd';
 import { VerificationStatus } from 'api/ProfileService';
 
 interface IProps {
-  message?: string;
   status?: VerificationStatus;
 }
 
-export const DocumentStatusTag: FC<IProps> = ({ message, status }) => {
-  console.log(message, status);
+export const DocumentStatusTag: FC<IProps> = ({ status }) => {
+  console.log('status', status);
 
   let text;
   let color;

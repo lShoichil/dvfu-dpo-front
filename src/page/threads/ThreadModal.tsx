@@ -34,6 +34,7 @@ const ThreadModal: FC<IProps> = ({ thread, isEdit, open, setOpen, setUpdateNeede
   const [programs, setPrograms] = useState<Program[]>([]);
 
   const getProgramsData = () => {
+    // todo: added lazy loader and поиск вместо запроса на все записи
     getAllPrograms(getTableParamsForRequest({ pagination: { pageSize: 1000 } }))
       .then(({ data }) => setPrograms(data.data))
       .catch(errorMessage);

@@ -1,10 +1,12 @@
 import React, { FC } from 'react';
 import { Button, Col, DatePicker, Form, Input, Row, Select } from 'antd';
 import dayjs from 'dayjs';
-import { getReqRule } from 'utils';
+import { getReqRule, mapDate } from 'utils';
 
 import { errorMessage } from 'api/MessageService';
 import { Gender, Passport, PassportWithStatus, updateMyPassport } from 'api/ProfileService';
+
+import { AlertAboutDocument } from './components/AlertAboutDocument';
 
 const { Item } = Form;
 
@@ -18,21 +20,15 @@ const PassportForm: FC<IProps> = ({ id, data, setUpdateNeeded }) => {
   const [form] = Form.useForm();
   const initialValues = {
     ...data?.passport,
-    issuedBy: data?.passport?.issued_by,
-    issuedWhen: data?.passport?.issued_when,
-    departmentСode: data?.passport?.department_code,
-    dateOfBirth: data?.passport?.date_of_birth,
-    placeOfBirth: data?.passport?.place_of_birth
+    issued_when: mapDate(data?.passport?.issued_when),
+    date_of_birth: mapDate(data?.passport?.date_of_birth)
   };
 
   const handleSubmit = (values: any) => {
     const dto = {
       ...values,
-      issued_by: values?.issuedBy,
-      issued_when: dayjs(values?.issued_when).format('DD.MM.YYYY'),
-      department_code: values?.departmentСode,
-      date_of_birth: dayjs(values?.dateOfBirth).format('DD.MM.YYYY'),
-      place_of_birth: values?.placeOfBirth
+      issued_when: dayjs(values?.issued_when)?.format('DD.MM.YYYY'),
+      date_of_birth: dayjs(values?.date_of_birth)?.format('DD.MM.YYYY')
     } as Passport;
 
     updateMyPassport(id, dto)
@@ -42,6 +38,12 @@ const PassportForm: FC<IProps> = ({ id, data, setUpdateNeeded }) => {
 
   return (
     <Form form={form} onFinish={handleSubmit} initialValues={initialValues} layout="vertical">
+      {data?.message && (
+        <Item>
+          <AlertAboutDocument status={data?.status} message={data?.message} />
+        </Item>
+      )}
+
       <Row gutter={16}>
         <Col span={6}>
           <Item name="surname" label="Фамилия" rules={[getReqRule()]}>
@@ -77,17 +79,17 @@ const PassportForm: FC<IProps> = ({ id, data, setUpdateNeeded }) => {
           </Item>
         </Col>
         <Col>
-          <Item name="issuedBy" label="Кем выдан" rules={[getReqRule()]}>
+          <Item name="issued_by" label="Кем выдан" rules={[getReqRule()]}>
             <Input />
           </Item>
         </Col>
         <Col>
-          <Item name="issuedWhen" label="Когда выдан" rules={[getReqRule()]}>
+          <Item name="issued_when" label="Когда выдан" rules={[getReqRule()]}>
             <DatePicker format={'DD.MM.YYYY'} />
           </Item>
         </Col>
         <Col>
-          <Item name="departmentСode" label="Код подразделения" rules={[getReqRule()]}>
+          <Item name="department_code" label="Код подразделения" rules={[getReqRule()]}>
             <Input />
           </Item>
         </Col>
@@ -95,12 +97,12 @@ const PassportForm: FC<IProps> = ({ id, data, setUpdateNeeded }) => {
 
       <Row gutter={16}>
         <Col>
-          <Item name="dateOfBirth" label="Дата рождения" rules={[getReqRule()]}>
+          <Item name="date_of_birth" label="Дата рождения" rules={[getReqRule()]}>
             <DatePicker format={'DD.MM.YYYY'} />
           </Item>
         </Col>
         <Col>
-          <Item name="placeOfBirth" label="Место рождения" rules={[getReqRule()]}>
+          <Item name="place_of_birth" label="Место рождения" rules={[getReqRule()]}>
             <Input />
           </Item>
         </Col>

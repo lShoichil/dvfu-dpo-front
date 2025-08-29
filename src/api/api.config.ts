@@ -3,7 +3,8 @@ import axios from 'axios';
 import AuthService from './api.auth';
 import { errorMessage, internalAppErrorMessage, serverBadRequestMessage } from './MessageService';
 
-const baseURL = 'https://dpo-ed.dvfu.ru/api/v1/';
+// export const baseURL = 'https://dpo-ed.dvfu.ru/api/v1/';
+export const baseURL = 'http://51.250.1.29:8080/api/v1/';
 export const instance = axios.create({ baseURL });
 
 instance.interceptors.request.use((config) => {
@@ -31,8 +32,8 @@ instance.interceptors.response.use(
   // в случае просроченного accessToken пытаемся его обновить:
   async (error) => {
     const { status } = error?.response || {};
-    if ([400, 409].includes(status)) return serverBadRequestMessage(error, error.response?.data);
-    if (status === 500) return internalAppErrorMessage(error?.message);
+    if ([400, 409].includes(status)) return serverBadRequestMessage(error, error.response?.data?.message);
+    if (status === 500) return internalAppErrorMessage(error.response?.data?.message);
 
     // предотвращаем зацикленный запрос, добавляя свойство _isRetry
     const originalRequest = { ...error.config };

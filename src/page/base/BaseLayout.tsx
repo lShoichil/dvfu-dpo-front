@@ -10,7 +10,7 @@ import {
   TeamOutlined,
   UserOutlined
 } from '@ant-design/icons';
-import { Layout, Menu, Segmented } from 'antd';
+import { Layout, Menu, Segmented, Space } from 'antd';
 import { Content, Header } from 'antd/es/layout/layout';
 import { MenuItemType } from 'antd/es/menu/interface';
 import { useHasRole } from 'hooks/useHasRole';
@@ -103,31 +103,31 @@ const BaseLayout = () => {
         icon: <UserOutlined />,
         label: 'Мой профиль'
       },
-      {
-        key: 'directory',
-        icon: <ContainerOutlined />,
-        label: 'Справочники'
-      },
-      {
-        key: 'applications',
-        icon: <FileProtectOutlined />,
-        label: 'Заявки'
-      },
+      // {
+      //   key: 'directory',
+      //   icon: <ContainerOutlined />,
+      //   label: 'Справочники'
+      // },
+      // {
+      //   key: 'applications',
+      //   icon: <FileProtectOutlined />,
+      //   label: 'Заявки'
+      // },
       {
         key: 'threads',
         icon: <TableOutlined />,
-        label: 'Потоки'
-      },
-      {
-        key: 'programs',
-        icon: <FolderOpenOutlined />,
         label: 'Программы'
-      },
-      {
-        key: 'users',
-        icon: <TeamOutlined />,
-        label: 'Пользователи'
       }
+      // {
+      //   key: 'programs',
+      //   icon: <FolderOpenOutlined />,
+      //   label: 'Программы'
+      // },
+      // {
+      //   key: 'users',
+      //   icon: <TeamOutlined />,
+      //   label: 'Пользователи'
+      // }
     ];
 
     if (hasRoleAdmin) return adminMenu;
@@ -152,17 +152,20 @@ const BaseLayout = () => {
           onClick={({ key }) => navigate(key)}
           activeKey={activeKey}
           defaultSelectedKeys={[activeKey]}
+          disabledOverflow={true}
         />
 
-        <Segmented
-          shape="round"
-          options={[
-            { value: 'light', icon: <SunOutlined /> },
-            { value: 'dark', icon: <MoonOutlined /> }
-          ]}
-        />
+        <Space wrap>
+          <Segmented
+            shape="round"
+            options={[
+              { value: 'light', icon: <SunOutlined /> },
+              { value: 'dark', icon: <MoonOutlined /> }
+            ]}
+          />
 
-        <ExitDropdown />
+          <ExitDropdown />
+        </Space>
       </Header>
 
       <Layout>

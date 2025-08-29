@@ -1,22 +1,22 @@
 import { FC, useEffect, useState } from 'react';
 import { Image } from 'antd';
 
-import { getProgramImage } from 'api/ProgramService';
+import { getStorageData } from 'api/ProgramService';
 
 interface IProps {
   imagePath: string;
   alt: string;
-  defaultImage: string;
 }
 
-export const SecureImage: FC<IProps> = ({ imagePath, alt, defaultImage }) => {
+export const SecureImage: FC<IProps> = ({ imagePath, alt }) => {
+  const defaultImage = 'https://gw.alipayobjects.com/zos/rmsportal/iXjVmWVHbCJAyqvDxdtx.png';
   const [imageUrl, setImageUrl] = useState<string>(defaultImage);
 
   useEffect(() => {
     if (!imagePath) return;
     let blobUrl: string | null = null;
 
-    getProgramImage(imagePath)
+    getStorageData(imagePath)
       .then(({ data }) => {
         if (data instanceof Blob) {
           blobUrl = URL.createObjectURL(data);

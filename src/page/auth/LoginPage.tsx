@@ -5,7 +5,7 @@ import { Button, Flex, Form, Input, Spin, Tooltip } from 'antd';
 import { getReqRule } from 'utils';
 
 import AuthService from 'api/api.auth';
-import { errorMessage, warnMessage } from 'api/MessageService';
+import { warnMessage } from 'api/MessageService';
 import { useAuthStore } from 'stores/AuthAppStore';
 
 const { Item } = Form;
@@ -34,7 +34,6 @@ const LoginPage = () => {
         localStorage.setItem('role', data.role);
         navigate('/home');
       })
-      .catch(errorMessage)
       .finally(() => setAuthInProgress(false));
   };
 

@@ -33,6 +33,8 @@ const FilterCard: FC<IProps> = ({ loading, tableParams, setTableParams, setUpdat
   const studyModeOptions = enumOptionsByKey(StudyModeTypeRu);
 
   const getCuratorsData = () => {
+    if (hasRoleApplicant) return;
+
     const params: TableParams = { filters: { roles: ['curator'] } };
     getUsers(getTableParamsForRequest(params))
       .then(({ data }) => setCurators(data.data))

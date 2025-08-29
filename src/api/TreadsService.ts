@@ -8,6 +8,10 @@ export const getAllTreads = (params: string): Promise<AxiosResponse<PageDto<Thre
   return instance.get('/treads' + params);
 };
 
+export const getOpenTreads = (params: string): Promise<AxiosResponse<PageDto<Thread>>> => {
+  return instance.get('/treads/open' + params);
+};
+
 export const createTread = (data: TreadDto): Promise<AxiosResponse> => {
   return instance.post('/treads', data);
 };
