@@ -12,4 +12,6 @@ export interface Program {
   image: string;
   school: School;
   study_mode: StudyModeType;
+  offer_pay: boolean;
+  contract_pay: boolean;
 }

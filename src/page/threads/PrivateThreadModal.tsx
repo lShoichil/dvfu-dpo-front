@@ -20,18 +20,18 @@ export interface TreadDto {
   start_date: string;
 }
 
-interface IProps {
+export interface IModalProps {
   thread?: Thread;
-  isEdit: boolean;
   open: boolean;
   setOpen: (v: boolean) => void;
   setUpdateNeeded: (v: boolean) => void;
 }
 
-const ThreadModal: FC<IProps> = ({ thread, isEdit, open, setOpen, setUpdateNeeded }) => {
+const PrivateThreadModal: FC<IModalProps> = ({ thread, open, setOpen, setUpdateNeeded }) => {
   const [form] = Form.useForm();
   const [program, setProgram] = useState<Program>();
   const [programs, setPrograms] = useState<Program[]>([]);
+  const isEdit = !!thread;
 
   const getProgramsData = () => {
     // todo: added lazy loader and поиск вместо запроса на все записи
@@ -118,6 +118,10 @@ const ThreadModal: FC<IProps> = ({ thread, isEdit, open, setOpen, setUpdateNeede
     setOpen(false);
   };
 
+  const afterOpenChange = () => {
+    form.resetFields();
+  };
+
   return (
     <Modal
       title={modalTitle}
@@ -125,7 +129,7 @@ const ThreadModal: FC<IProps> = ({ thread, isEdit, open, setOpen, setUpdateNeede
       onOk={createNewThread}
       onCancel={handleCancel}
       footer={isEdit ? null : undefined}
-      afterOpenChange={() => form.resetFields()}
+      afterOpenChange={afterOpenChange}
     >
       <Form form={form} initialValues={initialValues} disabled={isEdit}>
         <Item name={'program_id'} label={'Программа'}>
@@ -183,4 +187,4 @@ const ThreadModal: FC<IProps> = ({ thread, isEdit, open, setOpen, setUpdateNeede
   );
 };
 
-export default ThreadModal;
+export default PrivateThreadModal;

@@ -37,7 +37,7 @@ const OPDForm: FC<IProps> = ({ id, data, setUpdateNeeded }) => {
   };
 
   const handleDownloadTemplate = () => {
-    getOPDId().then(({ data }) => downloadActualOpd(data?.Name));
+    getOPDId().then(({ data }) => downloadActualOpd(data?.name));
   };
 
   const onChange: CheckboxProps['onChange'] = () => {

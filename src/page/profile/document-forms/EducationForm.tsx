@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { InfoCircleOutlined } from '@ant-design/icons';
-import { Button, Col, DatePicker, Form, Input, Row, Space, Switch, Tooltip } from 'antd';
+import { Button, Col, DatePicker, Form, Input, Row, Select, Space, Switch, Tooltip } from 'antd';
 import { getReqRule, mapDate } from 'utils';
 
 import { errorMessage, warnMessage } from 'api/MessageService';
@@ -108,8 +108,17 @@ export const EducationForm: FC<IProps> = ({ id, data, setUpdateNeeded }) => {
             </Item>
           </Col>
           <Col span={6}>
-            <Item name={'type'} label="Кафедра" rules={[getReqRule()]}>
-              <Input />
+            <Item name={'type'} label="Тип" rules={[getReqRule()]}>
+              <Select
+                allowClear
+                options={[
+                  // { value: 'student', label: 'Студент' },
+                  { value: 'bachelor', label: 'Бакалавриат' },
+                  { value: 'specialty', label: 'Специалитет' },
+                  { value: 'master', label: 'Магистратура' },
+                  { value: 'average', label: 'Среднеспециальное' }
+                ]}
+              />
             </Item>
           </Col>
           <Col span={6}>

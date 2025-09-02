@@ -157,6 +157,6 @@ export const updateMySurnameChange = (id: string, data: OPDDocument): Promise<Ax
 };
 
 // todo: added services for opd
-export const getOPDId = (): Promise<AxiosResponse<{ Name: string }>> => {
+export const getOPDId = (): Promise<AxiosResponse<{ name: string }>> => {
   return instance.get('/opd');
 };

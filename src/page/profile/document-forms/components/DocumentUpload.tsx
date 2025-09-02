@@ -25,7 +25,7 @@ export const DocumentUpload: FC<IProps> = ({ handleSubmit, setDocumentId, defaul
     : [];
 
   const handleDownloadDocument = ({ name, uid, response }: UploadFile<any>) => {
-    const id = response?.Name || uid;
+    const id = response?.name || uid;
     if (!id) return warnMessage('Отсутствует id документа.');
 
     getStorageData(id)
@@ -46,8 +46,8 @@ export const DocumentUpload: FC<IProps> = ({ handleSubmit, setDocumentId, defaul
       uploadFile(formData)
         .then(({ data }) => {
           onSuccess?.(data);
-          if (handleSubmit) handleSubmit(data?.Name);
-          if (setDocumentId) setDocumentId(data?.Name);
+          if (handleSubmit) handleSubmit(data?.name);
+          if (setDocumentId) setDocumentId(data?.name);
         })
         .catch((e: Error) => {
           onError?.(e);

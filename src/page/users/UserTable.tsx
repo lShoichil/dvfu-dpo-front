@@ -5,6 +5,7 @@ import { Card, Popconfirm, Select, Table, TableProps, Tag, Tooltip } from 'antd'
 import { User } from 'data/dto';
 import { RoleType, RoleTypeRu } from 'data/enum';
 import {
+  DEFAULT_TABLE_PARAMS,
   enumOptionsByKey,
   getTableParamsForRequest,
   getTableParamsFromSessionStorage,
@@ -22,7 +23,11 @@ const UserTable = () => {
   const [updateNeeded, setUpdateNeeded] = useState(true);
   const [loading, setLoading] = useState(false);
 
-  const { tableParams, setTableParams } = getTableParamsFromSessionStorage('userTableParams');
+  const defaultTableParams = {
+    ...DEFAULT_TABLE_PARAMS,
+    filters: { ...DEFAULT_TABLE_PARAMS.filters, verify: [true], deleted: [false] }
+  };
+  const { tableParams, setTableParams } = getTableParamsFromSessionStorage('userTableParams', defaultTableParams);
 
   const columns: TableProps<User>['columns'] = [
     { title: 'Имя', dataIndex: 'name', key: 'name' },
@@ -35,6 +40,7 @@ const UserTable = () => {
       dataIndex: 'role',
       render: (value: RoleType, record) => (
         <Select
+          popupMatchSelectWidth={false}
           defaultValue={RoleTypeRu[value]}
           onChange={(value) => handleRoleChange(record, value as RoleType)}
           options={options}
@@ -91,6 +97,8 @@ const UserTable = () => {
   ];
 
   const getData = (params: TableParams) => {
+    console.log(params);
+
     setUpdateNeeded(false);
     setLoading(true);
     getUsers(getTableParamsForRequest(params))

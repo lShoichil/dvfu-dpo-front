@@ -1,11 +1,15 @@
 import { AxiosResponse } from 'axios';
 import { PageDto, Thread } from 'data/dto';
-import { TreadDto } from 'page/threads/ThreadModal';
+import { TreadDto } from 'page/threads/PrivateThreadModal';
 
 import { instance } from './api.config';
 
 export const getAllTreads = (params: string): Promise<AxiosResponse<PageDto<Thread>>> => {
   return instance.get('/treads' + params);
+};
+
+export const getTreadById = (id: string): Promise<AxiosResponse<Thread>> => {
+  return instance.get(`/treads/${id}`);
 };
 
 export const getOpenTreads = (params: string): Promise<AxiosResponse<PageDto<Thread>>> => {

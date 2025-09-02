@@ -1,12 +1,12 @@
 import React from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { Empty } from 'antd';
 import PrivateRoute from 'navigate/PrivateRoute';
 import ActivatePage from 'page/auth/ActivatePage';
 import LoginPage from 'page/auth/LoginPage';
 import SignUpPage from 'page/auth/SignUpPage';
 import BaseLayout from 'page/base/BaseLayout';
 import { DirectoryTabs } from 'page/directory/DirectoryTabs';
+import OrderPage from 'page/orders/OrderPage';
 import { ProfilePageTabs } from 'page/profile/ProfilePageTabs';
 import ProgramPage from 'page/programs/ProgramPage';
 import ThreadsPage from 'page/threads/ThreadsPage';
@@ -23,7 +23,7 @@ const App = () => {
       <Route element={<PrivateRoute />}>
         <Route path="home" element={<BaseLayout />}>
           <Route path="profile" element={<ProfilePageTabs />} />
-          <Route path="applications" element={<Empty description="В процессе разработки" />} />
+          <Route path="orders" element={<OrderPage />} />
           <Route path="directory" element={<DirectoryTabs />} />
           <Route path="threads" element={<ThreadsPage />} />
           <Route path="programs" element={<ProgramPage />} />

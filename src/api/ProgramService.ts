@@ -20,6 +20,6 @@ export const getStorageData = (imageUrl: string): Promise<AxiosResponse> => {
   return instance.get('/storage/' + imageUrl, { responseType: 'blob' });
 };
 
-export const uploadFile = (data: FormData): Promise<AxiosResponse<{ Name: string }>> => {
+export const uploadFile = (data: FormData): Promise<AxiosResponse<{ name: string }>> => {
   return instance.post('/files/upload', data);
 };

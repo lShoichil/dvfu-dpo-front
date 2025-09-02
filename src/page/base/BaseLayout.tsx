@@ -43,40 +43,7 @@ const BaseLayout = () => {
         label: 'Справочники'
       },
       {
-        key: 'applications',
-        icon: <FileProtectOutlined />,
-        label: 'Заявки'
-      },
-      {
-        key: 'threads',
-        icon: <TableOutlined />,
-        label: 'Потоки'
-      },
-      {
-        key: 'programs',
-        icon: <FolderOpenOutlined />,
-        label: 'Программы'
-      },
-      {
-        key: 'users',
-        icon: <TeamOutlined />,
-        label: 'Пользователи'
-      }
-    ];
-
-    const curatorMenu = [
-      {
-        key: 'profile',
-        icon: <UserOutlined />,
-        label: 'Мой профиль'
-      },
-      {
-        key: 'directory',
-        icon: <ContainerOutlined />,
-        label: 'Справочники'
-      },
-      {
-        key: 'applications',
+        key: 'orders',
         icon: <FileProtectOutlined />,
         label: 'Заявки'
       },
@@ -103,35 +70,14 @@ const BaseLayout = () => {
         icon: <UserOutlined />,
         label: 'Мой профиль'
       },
-      // {
-      //   key: 'directory',
-      //   icon: <ContainerOutlined />,
-      //   label: 'Справочники'
-      // },
-      // {
-      //   key: 'applications',
-      //   icon: <FileProtectOutlined />,
-      //   label: 'Заявки'
-      // },
       {
         key: 'threads',
         icon: <TableOutlined />,
         label: 'Программы'
       }
-      // {
-      //   key: 'programs',
-      //   icon: <FolderOpenOutlined />,
-      //   label: 'Программы'
-      // },
-      // {
-      //   key: 'users',
-      //   icon: <TeamOutlined />,
-      //   label: 'Пользователи'
-      // }
     ];
 
-    if (hasRoleAdmin) return adminMenu;
-    if (hasRoleCurator) return curatorMenu;
+    if (hasRoleAdmin || hasRoleCurator) return adminMenu;
     return applicantMenu;
   };
 

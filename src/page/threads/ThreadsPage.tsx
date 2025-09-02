@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Card, Flex, List, Pagination, Space, Tag, Tooltip, Typography } from 'antd';
 import { Thread } from 'data/dto';
@@ -14,11 +15,12 @@ import {
 } from 'utils';
 
 import { errorMessage } from 'api/MessageService';
-import { getAllTreads, getOpenTreads } from 'api/TreadsService';
+import { getAllTreads, getOpenTreads, getTreadById } from 'api/TreadsService';
 
 import FilterCard from '../programs/components/ProgramFilterCard';
 import { SecureImage } from '../programs/components/ProgramSecureImage';
-import ThreadModal from './ThreadModal';
+import PrivateThreadModal from './PrivateThreadModal';
+import PublicThreadModal from './PublicThreadModal';
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -26,6 +28,12 @@ const ThreadsPage = () => {
   const [data, setData] = useState<Thread[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [updateNeeded, setUpdateNeeded] = useState<boolean>(true);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedThread, setSelectedThread] = useState<Thread>();
+
+  const [searchParams] = useSearchParams();
+  const applicationId = searchParams.get('id');
 
   const { hasRoleAdmin, hasRoleCurator, hasRoleApplicant } = useHasRole();
   const { tableParams, setTableParams } = getTableParamsFromSessionStorage('treadsTableParams');
@@ -53,24 +61,33 @@ const ThreadsPage = () => {
       .finally(() => setLoading(false));
   };
 
-  useEffect(() => {
-    if (updateNeeded) getData(tableParams);
-  }, [updateNeeded]);
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedThread, setSelectedThread] = useState<Thread>();
-  const [isModalEdit, setIsModalEdit] = useState(false);
-
   const handleCreateThreadClick = () => {
-    setIsModalEdit(false);
     setSelectedThread(undefined);
     setIsModalOpen(true);
   };
 
   const handleCardClick = (thread: Thread) => {
-    setIsModalEdit(true);
     setSelectedThread(thread);
     setIsModalOpen(true);
+  };
+
+  const getInfoById = (id: string) => {
+    getTreadById(id)
+      .then(({ data }) => handleCardClick(data))
+      .catch(errorMessage)
+      .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    if (updateNeeded) getData(tableParams);
+    if (applicationId) getInfoById(applicationId);
+  }, [updateNeeded]);
+
+  const modalProps = {
+    open: isModalOpen,
+    setOpen: setIsModalOpen,
+    setUpdateNeeded: setUpdateNeeded,
+    thread: selectedThread
   };
 
   return (
@@ -88,13 +105,7 @@ const ThreadsPage = () => {
         </Button>
       )}
 
-      <ThreadModal
-        open={isModalOpen}
-        setOpen={setIsModalOpen}
-        setUpdateNeeded={setUpdateNeeded}
-        thread={selectedThread}
-        isEdit={isModalEdit}
-      />
+      {hasRoleApplicant ? <PublicThreadModal {...modalProps} /> : <PrivateThreadModal {...modalProps} />}
 
       <List
         loading={loading}

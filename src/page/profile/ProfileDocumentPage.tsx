@@ -102,7 +102,7 @@ const ProfileDocumentPage = () => {
         setUser(data);
         setUpdateNeeded(true);
       })
-      .catch((e) => errorMessage(e))
+      .catch(errorMessage)
       .finally(() => setLoading(false));
   };
 
@@ -179,22 +179,10 @@ const ProfileDocumentPage = () => {
         <Steps
           current={currentStep}
           items={[
-            {
-              title: 'Авторизация',
-              description: 'Регистрация в системе'
-            },
-            {
-              title: 'Подача документов',
-              description: 'Заполнения и отправка всего перечня документов ниже'
-            },
-            {
-              title: 'Проверка документов',
-              description: 'Выполняется проверка документов куратором'
-            },
-            {
-              title: 'Успешная проверка',
-              description: 'Можно записываться на программы!'
-            }
+            { title: 'Авторизация', description: 'Регистрация в системе' },
+            { title: 'Подача документов', description: 'Заполнения и отправка всего перечня документов ниже' },
+            { title: 'Проверка документов', description: 'Выполняется проверка документов куратором' },
+            { title: 'Успешная проверка', description: 'Можно записываться на программы!' }
           ]}
         />
 

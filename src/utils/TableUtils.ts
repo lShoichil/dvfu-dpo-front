@@ -29,12 +29,12 @@ export const DEFAULT_TABLE_PARAMS: TableParams = {
 
 export const showTotal: PaginationProps['showTotal'] = (total) => `Всего ${total}`;
 
-export const getTableParamsFromSessionStorage = (key: string) => {
+export const getTableParamsFromSessionStorage = (key: string, defaultTableParams = DEFAULT_TABLE_PARAMS) => {
   const setTableParams = (params: TableParams) => window.sessionStorage.setItem(key, JSON.stringify(params));
   const getTableParams = () => JSON.parse(window.sessionStorage.getItem(key) ?? '{}');
 
   const preTableParams = getTableParams();
-  const tableParams = preTableParams?.pagination ? preTableParams : DEFAULT_TABLE_PARAMS;
+  const tableParams = preTableParams?.pagination ? preTableParams : defaultTableParams;
   return { tableParams, setTableParams };
 };
 
