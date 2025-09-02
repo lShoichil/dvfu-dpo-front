@@ -3,8 +3,8 @@ import axios from 'axios';
 import AuthService from './api.auth';
 import { errorMessage, internalAppErrorMessage, serverBadRequestMessage } from './MessageService';
 
-// export const baseURL = 'https://dpo-ed.dvfu.ru/api/v1/';
-export const baseURL = 'http://51.250.1.29:8080/api/v1/';
+export const baseURL = 'https://dpo-ed.dvfu.ru/api/v1/';
+// export const baseURL = 'http://51.250.1.29:8080/api/v1/';
 export const instance = axios.create({ baseURL });
 
 instance.interceptors.request.use((config) => {
